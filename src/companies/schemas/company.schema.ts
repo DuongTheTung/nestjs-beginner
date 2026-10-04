@@ -5,41 +5,18 @@ import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 
 
 
-export type UserDocument = HydratedDocument<User>;
+export type CompanyDocument = HydratedDocument<Company>;
 
 @Schema({ timestamps: true })
-export class User {
-
+export class Company {
     @Prop()
     name: string;
-
-    @Prop({ required: true })
-    email: string;
-
-    @Prop({ required: true })
-    password: string;
-
-    @Prop()
-    age: string;
-
-    @Prop()
-    gender: string;
 
     @Prop()
     address: string;
 
-    @Prop({ type: Object })
-    company: {
-        _id: mongoose.Schema.Types.ObjectId;
-        email: string;
-    };
-
-
     @Prop()
-    role: string;
-
-    @Prop()
-    refreshToken: string;
+    description: string;
 
     @Prop({ type: Object })
     createdBy: {
@@ -72,5 +49,5 @@ export class User {
     deletedAt: Date;
 }
 
-export const UserSchema = SchemaFactory.createForClass(User);
-// UserSchema.plugin(softDeletePlugin);
+export const CompanySchema = SchemaFactory.createForClass(Company);
+// CompanySchema.plugin(softDeletePlugin);
