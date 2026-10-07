@@ -4,6 +4,9 @@ import { createParamDecorator, ExecutionContext, SetMetadata } from '@nestjs/com
 export const IS_PUBLIC_KEY = 'isPublic';
 export const Public = () => SetMetadata(IS_PUBLIC_KEY, true);
 
+export const IS_SKIP_PERMISSION = 'isSkipPermission';
+export const SkipCheckPermission = () => SetMetadata(IS_SKIP_PERMISSION, true);
+
 export const RESPONSE_MESSAGE = "response_message";
 export const ResponseMessage = (message: string) =>
     SetMetadata(RESPONSE_MESSAGE, message);

@@ -31,8 +31,8 @@ export class CompaniesService {
     const { filter, sort, population } = aqp(qs);
     delete filter.current;
     delete filter.pageSize;
-    let offset = (+currentPage - 1) * (+limit);
     let defaultLimit = +limit ? +limit : 10;
+    let offset = (+currentPage > 0 ? +currentPage - 1 : 0) * defaultLimit;
     const totalItems = (await this.companyModel.find(filter)).length;
     const totalPages = Math.ceil(totalItems / defaultLimit);
 
@@ -45,16 +45,16 @@ export class CompaniesService {
       .exec();
     return {
       meta: {
-        current: currentPage, //trang hiện tại
-        pageSize: limit, //số lượng bản ghi đã lấy
-        pages: totalPages, //tổng số trang với điều kiện query
-        total: totalItems // tổng số phần tử (số bản ghi)
+        current: +currentPage > 0 ? +currentPage : 1,
+        pageSize: defaultLimit,
+        pages: totalPages,
+        total: totalItems
       },
       result //kết quả query
     }
   }
 
-  async findOne(id: number) {
+  async findOne(id: string) {
     if (!mongoose.Types.ObjectId.isValid(id)) {
       throw new BadRequestException(`not found company with id=${id}`)
     }

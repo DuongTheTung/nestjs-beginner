@@ -74,9 +74,9 @@ export class SubscribersService {
     return await this.subscriberModel.findById(id);
   }
 
-  async update(id: string, updateSubscriberDto: UpdateSubscriberDto, user: IUser) {
-    return await this.subscriberModel.updateOne(
-      { _id: id },
+  async update(updateSubscriberDto: UpdateSubscriberDto, user: IUser) {
+    const updated = await this.subscriberModel.updateOne(
+      { email: user.email },
       {
         ...updateSubscriberDto,
         updatedBy: {
@@ -84,7 +84,9 @@ export class SubscribersService {
           email: user.email,
         },
       },
+      { upsert: true }
     );
+    return updated;
   }
 
   async remove(id: string, user: IUser) {

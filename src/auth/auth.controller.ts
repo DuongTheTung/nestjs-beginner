@@ -16,7 +16,7 @@ export class AuthController {
     @Public()
     @UseGuards(LocalAuthGuard)
     @Post('/login')
-    @ResponseMessage("User login")
+    @ResponseMessage("Đăng nhập thành công")
     handleLogin(@Req() req: any,
         @Res({ passthrough: true }) response: Response) {
         return this.authService.login(req.user, response);

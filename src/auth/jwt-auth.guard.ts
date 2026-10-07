@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
-import { IS_PUBLIC_KEY } from '../decorator/customize';
+import { IS_PUBLIC_KEY, IS_SKIP_PERMISSION } from '../decorator/customize';
 
 @Injectable()
 
@@ -37,6 +37,15 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         // check permissions
         const targetMethod = request.method;
         const targetEndpoint = request.route?.path as string;
+
+        const isSkipPermission = this.reflector.getAllAndOverride<boolean>(IS_SKIP_PERMISSION, [
+            context.getHandler(),
+            context.getClass(),
+        ]);
+
+        if (isSkipPermission) {
+            return user;
+        }
 
         const permissions = user?.permissions ?? [];
         let isExist = permissions.find((permission: any) => 

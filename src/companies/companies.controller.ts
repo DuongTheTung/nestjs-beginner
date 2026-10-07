@@ -3,7 +3,7 @@ import { CompaniesService } from './companies.service';
 import { CreateCompanyDto } from './dto/create-company.dto';
 import { UpdateCompanyDto } from './dto/update-company.dto';
 import type { IUser } from '../users/users.interface';
-import { ResponseMessage, User } from '../decorator/customize';
+import { ResponseMessage, User, Public } from '../decorator/customize';
 
 @Controller('companies')
 export class CompaniesController {
@@ -15,6 +15,7 @@ export class CompaniesController {
     return this.companiesService.create(createCompanyDto, user);
   }
 
+  @Public()
   @Get()
   @ResponseMessage("Fetch list company with paginate")
   findAll(@Query("current") currentPage: string,
@@ -25,9 +26,10 @@ export class CompaniesController {
     return this.companiesService.findAll(+currentPage, +limit, qs);
   }
 
+  @Public()
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.companiesService.findOne(+id);
+    return this.companiesService.findOne(id);
   }
 
   @Patch(':id')

@@ -5,8 +5,12 @@ import type { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import { Permission, PermissionDocument } from '../permissions/schemas/permission.schema';
 import { Role, RoleDocument } from '../roles/schemas/role.schema';
 import { User, UserDocument } from '../users/schemas/user.schema';
+import { Company, CompanyDocument } from '../companies/schemas/company.schema';
+import { Job, JobDocument } from '../jobs/schemas/job.schema';
+import { Resume, ResumeDocument } from '../resumes/schemas/resume.schema';
+import { Subscriber, SubscriberDocument } from '../subscribers/schemas/subscriber.schema';
 import { UsersService } from '../users/users.service';
-import { INIT_PERMISSIONS, INIT_ROLES, INIT_USERS } from './sample.data';
+import { INIT_PERMISSIONS, INIT_ROLES, INIT_USERS, INIT_COMPANIES, INIT_JOBS, INIT_RESUMES, INIT_SUBSCRIBERS } from './sample.data';
 
 @Injectable()
 export class DatabasesService implements OnModuleInit {
@@ -16,6 +20,10 @@ export class DatabasesService implements OnModuleInit {
     @InjectModel(User.name) private userModel: SoftDeleteModel<UserDocument>,
     @InjectModel(Permission.name) private permissionModel: SoftDeleteModel<PermissionDocument>,
     @InjectModel(Role.name) private roleModel: SoftDeleteModel<RoleDocument>,
+    @InjectModel(Company.name) private companyModel: SoftDeleteModel<CompanyDocument>,
+    @InjectModel(Job.name) private jobModel: SoftDeleteModel<JobDocument>,
+    @InjectModel(Resume.name) private resumeModel: SoftDeleteModel<ResumeDocument>,
+    @InjectModel(Subscriber.name) private subscriberModel: SoftDeleteModel<SubscriberDocument>,
     private configService: ConfigService,
     private userService: UsersService,
   ) {}
@@ -68,6 +76,24 @@ export class DatabasesService implements OnModuleInit {
                 role: roleId
             });
         }
+      }
+
+      const countCompany = await this.companyModel.countDocuments({});
+      const countJob = await this.jobModel.countDocuments({});
+      const countResume = await this.resumeModel.countDocuments({});
+      const countSubscriber = await this.subscriberModel.countDocuments({});
+
+      if (countCompany === 0) {
+        await this.companyModel.insertMany(INIT_COMPANIES);
+      }
+      if (countJob === 0) {
+        await this.jobModel.insertMany(INIT_JOBS);
+      }
+      if (countResume === 0) {
+        await this.resumeModel.insertMany(INIT_RESUMES);
+      }
+      if (countSubscriber === 0) {
+        await this.subscriberModel.insertMany(INIT_SUBSCRIBERS);
       }
 
       if (countUser > 0 && countRole > 0 && countPermission > 0) {

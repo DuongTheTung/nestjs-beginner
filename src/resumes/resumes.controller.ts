@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestj
 import { ResumesService } from './resumes.service';
 import { CreateResumeDto } from './dto/create-resume.dto';
 import { UpdateResumeDto } from './dto/update-resume.dto';
-import { User, ResponseMessage } from '../decorator/customize';
+import { User, ResponseMessage, SkipCheckPermission } from '../decorator/customize';
 import type { IUser } from '../users/users.interface';
 
 @Controller('resumes')
@@ -11,12 +11,14 @@ export class ResumesController {
 
   @Post()
   @ResponseMessage('Create a new resume')
+  @SkipCheckPermission()
   create(@Body() createResumeDto: CreateResumeDto, @User() user: IUser) {
     return this.resumesService.create(createResumeDto, user);
   }
 
   @Post('by-user')
   @ResponseMessage('Get Resumes by User')
+  @SkipCheckPermission()
   findByUsers(@User() user: IUser) {
     return this.resumesService.findByUsers(user);
   }
