@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+</style>
+</head>
+<body>
+
+<h2>Welcome {{receiver}} to Nice App!</h2>
+<p>Here are some jobs matching your skills:</p>
+
+<table>
+  <tr>
+    <th>Job Name</th>
+    <th>Company</th>
+    <th>Salary</th>
+    <th>Skills</th>
+  </tr>
+  {{#each jobs}}
+  <tr>
+    <td>{{this.name}}</td>
+    <td>{{this.company}}</td>
+    <td>{{this.salary}}</td>
+    <td>
+      {{#each this.skills}}
+        <span>{{this}}</span>
+      {{/each}}
+    </td>
+  </tr>
+  {{/each}}
+</table>
+
+</body>
+</html>

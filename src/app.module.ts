@@ -10,6 +10,14 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
 import { softDeletePlugin } from 'soft-delete-plugin-mongoose';
 import { CompaniesModule } from './companies/companies.module';
+import { DatabasesModule } from './databases/databases.module';
+import { JobsModule } from './jobs/jobs.module';
+import { FilesModule } from './files/files.module';
+import { ResumesModule } from './resumes/resumes.module';
+import { PermissionsModule } from './permissions/permissions.module';
+import { RolesModule } from './roles/roles.module';
+import { SubscribersModule } from './subscribers/subscribers.module';
+import { MailModule } from './mail/mail.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -37,7 +45,31 @@ import { CompaniesModule } from './companies/companies.module';
     AuthModule,
 
 
-    CompaniesModule
+    CompaniesModule,
+
+
+    DatabasesModule,
+
+
+    JobsModule,
+
+
+    FilesModule,
+
+
+    ResumesModule,
+
+
+    PermissionsModule,
+
+
+    RolesModule,
+
+
+    SubscribersModule,
+
+
+    MailModule
 
   ],
 

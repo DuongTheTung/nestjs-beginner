@@ -9,9 +9,10 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtStrategy } from './passport/jwt.strategy';
 import ms from 'ms';
 import { AuthController } from './auth.controller';
+import { RolesModule } from '../roles/roles.module';
 
 @Module({
-  imports: [UsersModule, PassportModule,
+  imports: [UsersModule, RolesModule, PassportModule,
     // Source - https://stackoverflow.com/a/54310397
     // Posted by Kim Kern, modified by community. See post 'Timeline' for change history
     // Retrieved 2026-10-02, License - CC BY-SA 4.0
