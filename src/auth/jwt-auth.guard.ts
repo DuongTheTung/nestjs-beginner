@@ -3,7 +3,6 @@ import {
     ExecutionContext,
     Injectable,
     UnauthorizedException,
-    ForbiddenException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
@@ -54,12 +53,12 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
             targetEndpoint === permission.apiPath
         );
 
-        if (targetEndpoint && targetEndpoint.match(/^\/api\/v\d+\/auth/)) {
+        if (targetEndpoint.startsWith('/api/v1/auth')) {
             isExist = true;
         }
 
-        if (!isExist) {
-            throw new ForbiddenException("Bạn không có quyền truy cập endpoint này");
+        if (!isExist && user.role?.name !== "ADMIN" && user.role?.name !== "Admin") {
+            throw new UnauthorizedException("Bạn không có quyền truy cập endpoint này");
         }
 
         return user;
