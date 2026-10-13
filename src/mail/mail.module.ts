@@ -34,6 +34,7 @@ import { Job, JobSchema } from '../jobs/schemas/job.schema';
             strict: true,
           },
         },
+        preview: true,
       }),
       inject: [ConfigService],
     }),
@@ -41,4 +42,4 @@ import { Job, JobSchema } from '../jobs/schemas/job.schema';
   controllers: [MailController],
   providers: [MailService]
 })
-export class MailModule {}
+export class MailModule { }

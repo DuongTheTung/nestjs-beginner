@@ -1,66 +1,270 @@
 import mongoose from 'mongoose';
 
 export const INIT_PERMISSIONS = [
-    {
-        name: 'Create a new Permission',
-        apiPath: '/api/v1/permissions',
-        method: 'POST',
-        module: 'PERMISSIONS',
-    },
-    {
-        name: 'Fetch permissions with paginate',
-        apiPath: '/api/v1/permissions',
-        method: 'GET',
-        module: 'PERMISSIONS',
-    },
-    {
-        name: 'Fetch a permission by id',
-        apiPath: '/api/v1/permissions/:id',
-        method: 'GET',
-        module: 'PERMISSIONS',
-    },
-    {
-        name: 'Update a permission',
-        apiPath: '/api/v1/permissions/:id',
-        method: 'PATCH',
-        module: 'PERMISSIONS',
-    },
-    {
-        name: 'Delete a permission',
-        apiPath: '/api/v1/permissions/:id',
-        method: 'DELETE',
-        module: 'PERMISSIONS',
-    },
-    {
-        name: 'Fetch companies with paginate',
-        apiPath: '/api/v1/companies',
-        method: 'GET',
-        module: 'COMPANIES',
-    },
-    {
-        name: 'Fetch users with paginate',
-        apiPath: '/api/v1/users',
-        method: 'GET',
-        module: 'USERS',
-    },
-    {
-        name: 'Fetch jobs with paginate',
-        apiPath: '/api/v1/jobs',
-        method: 'GET',
-        module: 'JOBS',
-    },
-    {
-        name: 'Fetch resumes with paginate',
-        apiPath: '/api/v1/resumes',
-        method: 'GET',
-        module: 'RESUMES',
-    },
-    {
-        name: 'Fetch roles with paginate',
-        apiPath: '/api/v1/roles',
-        method: 'GET',
-        module: 'ROLES',
-    }
+  {
+    "name": "Create a new user",
+    "apiPath": "/api/v1/users",
+    "method": "POST",
+    "module": "USERS"
+  },
+  {
+    "name": "fetch user with paginate",
+    "apiPath": "/api/v1/users",
+    "method": "GET",
+    "module": "USERS"
+  },
+  {
+    "name": "fetch user by id",
+    "apiPath": "/api/v1/users/:id",
+    "method": "GET",
+    "module": "USERS"
+  },
+  {
+    "name": "Update a user",
+    "apiPath": "/api/v1/users/:id",
+    "method": "PATCH",
+    "module": "USERS"
+  },
+  {
+    "name": "Delete a user",
+    "apiPath": "/api/v1/users/:id",
+    "method": "DELETE",
+    "module": "USERS"
+  },
+  {
+    "name": "Create a new subscriber",
+    "apiPath": "/api/v1/subscribers",
+    "method": "POST",
+    "module": "SUBSCRIBERS"
+  },
+  {
+    "name": "Get subscriber skills",
+    "apiPath": "/api/v1/subscribers/skills",
+    "method": "POST",
+    "module": "SUBSCRIBERS"
+  },
+  {
+    "name": "Fetch subscribers with paginate",
+    "apiPath": "/api/v1/subscribers",
+    "method": "GET",
+    "module": "SUBSCRIBERS"
+  },
+  {
+    "name": "Fetch a subscriber by id",
+    "apiPath": "/api/v1/subscribers/:id",
+    "method": "GET",
+    "module": "SUBSCRIBERS"
+  },
+  {
+    "name": "Update a subscriber",
+    "apiPath": "/api/v1/subscribers",
+    "method": "PATCH",
+    "module": "SUBSCRIBERS"
+  },
+  {
+    "name": "Delete a subscriber",
+    "apiPath": "/api/v1/subscribers/:id",
+    "method": "DELETE",
+    "module": "SUBSCRIBERS"
+  },
+  {
+    "name": "Create a new role",
+    "apiPath": "/api/v1/roles",
+    "method": "POST",
+    "module": "ROLES"
+  },
+  {
+    "name": "Fetch roles with paginate",
+    "apiPath": "/api/v1/roles",
+    "method": "GET",
+    "module": "ROLES"
+  },
+  {
+    "name": "Fetch a role by id",
+    "apiPath": "/api/v1/roles/:id",
+    "method": "GET",
+    "module": "ROLES"
+  },
+  {
+    "name": "Update a role",
+    "apiPath": "/api/v1/roles/:id",
+    "method": "PATCH",
+    "module": "ROLES"
+  },
+  {
+    "name": "Delete a role",
+    "apiPath": "/api/v1/roles/:id",
+    "method": "DELETE",
+    "module": "ROLES"
+  },
+  {
+    "name": "Create a new resume",
+    "apiPath": "/api/v1/resumes",
+    "method": "POST",
+    "module": "RESUMES"
+  },
+  {
+    "name": "Get Resumes by User",
+    "apiPath": "/api/v1/resumes/by-user",
+    "method": "POST",
+    "module": "RESUMES"
+  },
+  {
+    "name": "Fetch all resumes with paginate",
+    "apiPath": "/api/v1/resumes",
+    "method": "GET",
+    "module": "RESUMES"
+  },
+  {
+    "name": "Fetch a resume by id",
+    "apiPath": "/api/v1/resumes/:id",
+    "method": "GET",
+    "module": "RESUMES"
+  },
+  {
+    "name": "Update status resume",
+    "apiPath": "/api/v1/resumes/:id",
+    "method": "PATCH",
+    "module": "RESUMES"
+  },
+  {
+    "name": "Delete a resume by id",
+    "apiPath": "/api/v1/resumes/:id",
+    "method": "DELETE",
+    "module": "RESUMES"
+  },
+  {
+    "name": "Create a new permission",
+    "apiPath": "/api/v1/permissions",
+    "method": "POST",
+    "module": "PERMISSIONS"
+  },
+  {
+    "name": "Fetch permissions with paginate",
+    "apiPath": "/api/v1/permissions",
+    "method": "GET",
+    "module": "PERMISSIONS"
+  },
+  {
+    "name": "Fetch a permission by id",
+    "apiPath": "/api/v1/permissions/:id",
+    "method": "GET",
+    "module": "PERMISSIONS"
+  },
+  {
+    "name": "Update a permission",
+    "apiPath": "/api/v1/permissions/:id",
+    "method": "PATCH",
+    "module": "PERMISSIONS"
+  },
+  {
+    "name": "Delete a permission",
+    "apiPath": "/api/v1/permissions/:id",
+    "method": "DELETE",
+    "module": "PERMISSIONS"
+  },
+  {
+    "name": "Create a new job",
+    "apiPath": "/api/v1/jobs",
+    "method": "POST",
+    "module": "JOBS"
+  },
+  {
+    "name": "Fetch jobs with pagination",
+    "apiPath": "/api/v1/jobs",
+    "method": "GET",
+    "module": "JOBS"
+  },
+  {
+    "name": "Fetch a job by id",
+    "apiPath": "/api/v1/jobs/:id",
+    "method": "GET",
+    "module": "JOBS"
+  },
+  {
+    "name": "Update a job",
+    "apiPath": "/api/v1/jobs/:id",
+    "method": "PATCH",
+    "module": "JOBS"
+  },
+  {
+    "name": "Delete a job",
+    "apiPath": "/api/v1/jobs/:id",
+    "method": "DELETE",
+    "module": "JOBS"
+  },
+  {
+    "name": "Test email",
+    "apiPath": "/api/v1/mail",
+    "method": "GET",
+    "module": "MAIL"
+  },
+  {
+    "name": "Upload Single File",
+    "apiPath": "/api/v1/files/upload",
+    "method": "POST",
+    "module": "FILES"
+  },
+  {
+    "name": "Đăng nhập thành công",
+    "apiPath": "/api/v1/auth/login",
+    "method": "POST",
+    "module": "AUTH"
+  },
+  {
+    "name": "Register a new user",
+    "apiPath": "/api/v1/auth/register",
+    "method": "POST",
+    "module": "AUTH"
+  },
+  {
+    "name": "Get user information",
+    "apiPath": "/api/v1/auth/account",
+    "method": "GET",
+    "module": "AUTH"
+  },
+  {
+    "name": "Get user refresh token",
+    "apiPath": "/api/v1/auth/refresh",
+    "method": "GET",
+    "module": "AUTH"
+  },
+  {
+    "name": "Logout user",
+    "apiPath": "/api/v1/auth/logout",
+    "method": "POST",
+    "module": "AUTH"
+  },
+  {
+    "name": "Create a new company",
+    "apiPath": "/api/v1/companies",
+    "method": "POST",
+    "module": "COMPANIES"
+  },
+  {
+    "name": "Fetch list company with paginate",
+    "apiPath": "/api/v1/companies",
+    "method": "GET",
+    "module": "COMPANIES"
+  },
+  {
+    "name": "Fetch a company by id",
+    "apiPath": "/api/v1/companies/:id",
+    "method": "GET",
+    "module": "COMPANIES"
+  },
+  {
+    "name": "Update a company",
+    "apiPath": "/api/v1/companies/:id",
+    "method": "PATCH",
+    "module": "COMPANIES"
+  },
+  {
+    "name": "Delete a company",
+    "apiPath": "/api/v1/companies/:id",
+    "method": "DELETE",
+    "module": "COMPANIES"
+  }
 ];
 
 export const INIT_ROLES = [
