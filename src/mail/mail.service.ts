@@ -14,7 +14,7 @@ export class MailService {
     private subscriberModel: SoftDeleteModel<SubscriberDocument>,
     @InjectModel(Job.name)
     private jobModel: SoftDeleteModel<JobDocument>,
-  ) {}
+  ) { }
 
   @Cron(CronExpression.EVERY_WEEK)
   async handleCron() {
@@ -31,9 +31,9 @@ export class MailService {
             skills: item.skills
           }
         })
-        
+
         await this.mailerService.sendMail({
-          to: "haryphamdev@gmail.com", // should be subs.email, but hardcoded for test
+          to: "ankdbadao@gmail.com", // should be subs.email, but hardcoded for test
           from: '"Support Team" <support@example.com>',
           subject: 'Welcome to Nice App! Here are some jobs for you',
           template: 'new-job',
