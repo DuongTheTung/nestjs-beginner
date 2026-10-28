@@ -9,8 +9,8 @@ import { Reflector } from '@nestjs/core';
 import { AuthGuard } from '@nestjs/passport';
 import { IS_PUBLIC_KEY, IS_SKIP_PERMISSION } from '../decorator/customize';
 
+//jwtguard kế thừa jwtstrategy để check quyền
 @Injectable()
-
 export class JwtAuthGuard extends AuthGuard('jwt') {
     constructor(private reflector: Reflector) {
         super();
@@ -49,7 +49,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
         }
 
         const permissions = user?.permissions ?? [];
-        let isExist = permissions.find((permission: any) => 
+        let isExist = permissions.find((permission: any) =>
             targetMethod === permission.method &&
             targetEndpoint === permission.apiPath
         );

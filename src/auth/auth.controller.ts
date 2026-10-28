@@ -3,10 +3,12 @@ import { AuthService } from './auth.service';
 import { Public, ResponseMessage, User } from '../decorator/customize';
 import { LocalAuthGuard } from './local-auth.guard';
 import { JwtAuthGuard } from './jwt-auth.guard';
-import { RegisterUserDto } from '../users/dto/create-user.dto';
+import { RegisterUserDto, UserLoginDto } from '../users/dto/create-user.dto';
 import type { Response, Request, response } from 'express';
 import type { IUser } from '../users/users.interface';
+import { ApiBody } from '@nestjs/swagger';
 
+// nhận request từ client
 @Controller("auth")
 export class AuthController {
     constructor(
@@ -15,6 +17,7 @@ export class AuthController {
 
     @Public()
     @UseGuards(LocalAuthGuard)
+    @ApiBody({ type: UserLoginDto })
     @Post('/login')
     @ResponseMessage("Đăng nhập thành công")
     handleLogin(@Req() req: any,

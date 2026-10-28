@@ -8,6 +8,8 @@ import { ConfigService } from '@nestjs/config';
 import ms from 'ms';
 import { response, Response } from 'express';
 import { RolesService } from '../roles/roles.service';
+
+
 @Injectable()
 export class AuthService {
     constructor(
@@ -16,7 +18,7 @@ export class AuthService {
         private configService: ConfigService,
         private rolesService: RolesService
     ) { }
-
+    // tìm và kiểm tra tk mk
     async validateUser(username: string, pass: string): Promise<any> {
         // console.log('--- BƯỚC 2: Tìm user với username =', username);
         const user = await this.usersService.findOneByUsername(username);
@@ -87,6 +89,7 @@ export class AuthService {
         return refresh_token;
     }
 
+    // xử lý request lấy token mới
     processNewToken = async (refreshToken: string, response: Response) => {
         try {
             this.jwtService.verify(refreshToken, {
@@ -141,7 +144,7 @@ export class AuthService {
         };
 
     }
-
+    // xóa token trong db và cookie trên client
     logout = async (response: Response, user: IUser) => {
         await this.usersService.updateUserToken("", user._id);
         response.clearCookie("refresh_token");

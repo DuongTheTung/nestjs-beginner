@@ -1,5 +1,6 @@
+import { ApiProperty, OmitType } from "@nestjs/swagger";
 import { Type } from "class-transformer";
-import { IsDefined, IsEmail, IsNotEmpty, IsNotEmptyObject, IsObject, ValidateNested, IsMongoId } from "class-validator";
+import { IsDefined, IsEmail, IsNotEmpty, IsNotEmptyObject, IsObject, ValidateNested, IsMongoId, IsString } from "class-validator";
 import mongoose from "mongoose";
 
 class Company {
@@ -45,26 +46,21 @@ export class CreateUserDto {
 
 }
 
-export class RegisterUserDto {
+export class RegisterUserDto extends OmitType(
+    CreateUserDto,
+    ['role', 'company'] as const,
+) {}
 
+export class UserLoginDto {
+    @IsString()
     @IsNotEmpty()
-    name: string;
-
-    @IsEmail()
+    @ApiProperty({ example: 'admin@gmail.com', description: 'username' })
+    readonly username: string;
+    @IsString()
     @IsNotEmpty()
-    email: string;
-
-    @IsNotEmpty()
-    password: string;
-
-    @IsNotEmpty()
-    age: number;
-
-
-    @IsNotEmpty()
-    gender: string;
-
-    @IsNotEmpty()
-    address: string;
-
+    @ApiProperty({
+        example: '123456',
+        description: 'password',
+    })
+    readonly password: string;
 }
