@@ -267,6 +267,27 @@ export const INIT_PERMISSIONS = [
   }
 ];
 
+export const USER_PERMISSIONS = [
+  { apiPath: '/api/v1/files/upload', method: 'POST' },
+  { apiPath: '/api/v1/resumes', method: 'POST' },
+  { apiPath: '/api/v1/resumes/by-user', method: 'POST' },
+  { apiPath: '/api/v1/resumes/:id', method: 'GET' },
+  { apiPath: '/api/v1/resumes/:id', method: 'DELETE' },
+  { apiPath: '/api/v1/subscribers', method: 'POST' },
+  { apiPath: '/api/v1/subscribers/skills', method: 'POST' },
+  { apiPath: '/api/v1/subscribers', method: 'PATCH' },
+  { apiPath: '/api/v1/jobs', method: 'GET' },
+  { apiPath: '/api/v1/jobs/:id', method: 'GET' },
+  { apiPath: '/api/v1/companies', method: 'GET' },
+  { apiPath: '/api/v1/companies/:id', method: 'GET' },
+  { apiPath: '/api/v1/auth/login', method: 'POST' },
+  { apiPath: '/api/v1/auth/register', method: 'POST' },
+  { apiPath: '/api/v1/auth/account', method: 'GET' },
+  { apiPath: '/api/v1/auth/refresh', method: 'GET' },
+  { apiPath: '/api/v1/auth/logout', method: 'POST' },
+  { apiPath: '/api/v1/users/:id', method: 'GET' },
+];
+
 export const INIT_ROLES = [
     {
         name: 'ADMIN',
@@ -304,11 +325,13 @@ export const INIT_COMPANIES = [
         name: 'FPT Software',
         address: 'FPT Tower, Pham Van Bach, Cau Giay, Hanoi',
         description: 'The leading IT service provider in Vietnam.',
+        logo: 'fpt.png',
     },
     {
         name: 'VNG Corporation',
         address: 'Z06 Street 13, Tan Thuan Dong Ward, District 7, HCMC',
         description: 'Leading technology and internet company in Vietnam.',
+        logo: 'vng.png',
     }
 ];
 

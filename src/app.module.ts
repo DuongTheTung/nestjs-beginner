@@ -18,6 +18,7 @@ import { PermissionsModule } from './permissions/permissions.module';
 import { RolesModule } from './roles/roles.module';
 import { SubscribersModule } from './subscribers/subscribers.module';
 import { MailModule } from './mail/mail.module';
+import { ScheduleModule } from '@nestjs/schedule';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -26,7 +27,7 @@ import { MailModule } from './mail/mail.module';
 
 
     MongooseModule.forRootAsync({
-      imports: [ConfigModule],
+      imports: [ConfigModule, ScheduleModule.forRoot()],
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('MONGODB_URI'),
         connectionFactory: (connection) => {
@@ -75,10 +76,7 @@ import { MailModule } from './mail/mail.module';
 
   controllers: [AppController,],
   providers: [AppService,
-    // {
-    //   provide: APP_GUARD,
-    //   useClass: JwtAuthGuard,
-    // },
+
   ],
 })
 export class AppModule { }

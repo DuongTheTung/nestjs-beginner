@@ -33,7 +33,7 @@ export class MailService {
         })
 
         await this.mailerService.sendMail({
-          to: "ankdbadao@gmail.com", // should be subs.email, but hardcoded for test
+          to: subs.email,
           from: '"Support Team" <support@example.com>',
           subject: 'Welcome to Nice App! Here are some jobs for you',
           template: 'new-job',

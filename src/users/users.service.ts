@@ -1,8 +1,9 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto, RegisterUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { UserDocument, User as UserM } from './schemas/user.schema';
+import { Role, RoleDocument } from '../roles/schemas/role.schema';
 import mongoose, { Model } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import type { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
@@ -12,7 +13,8 @@ import aqp from 'api-query-params';
 @Injectable()
 export class UsersService {
 
-  constructor(@InjectModel(UserM.name) private userModel: SoftDeleteModel<UserDocument>) { }
+  constructor(@InjectModel(UserM.name) private userModel: SoftDeleteModel<UserDocument>,
+    @InjectModel(Role.name) private roleModel: SoftDeleteModel<UserDocument>) { }
   getHashPassword = (password: string) => {
     const salt = bcrypt.genSaltSync(10);
     const hash = bcrypt.hashSync(password, salt);
@@ -76,6 +78,7 @@ export class UsersService {
     }).select("-password");
   }
 
+
   findOneByUsername(username: string) {
 
     return this.userModel.findOne({
@@ -135,13 +138,20 @@ export class UsersService {
       throw new BadRequestException("Email ddax toonf taij");
     }
     const hashPassword = this.getHashPassword(user.password);
+    const role = await this.roleModel.findOne({
+      name: 'USER'
+    });
+
+    if (!role) {
+      throw new NotFoundException('Role USER not found');
+    }
     let newRegister = await this.userModel.create({
       name,
       email, password: hashPassword,
       age,
       gender,
       address,
-      role: "USER"
+      role: role._id,
     })
     return newRegister;
   }

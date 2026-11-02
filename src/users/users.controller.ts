@@ -29,7 +29,7 @@ export class UsersController {
     return this.usersService.findAll(+currenPage, +limit, qs);
   }
 
-  @Public()
+
   @Get(':id')
   @ResponseMessage("fetch user by id")
   async findOne(@Param('id') id: string) {
@@ -48,4 +48,6 @@ export class UsersController {
   remove(@Param('id') id: string, @User() user: IUser) {
     return this.usersService.remove(id, user);
   }
+
+
 }

@@ -10,7 +10,7 @@ import { Job, JobDocument } from '../jobs/schemas/job.schema';
 import { Resume, ResumeDocument } from '../resumes/schemas/resume.schema';
 import { Subscriber, SubscriberDocument } from '../subscribers/schemas/subscriber.schema';
 import { UsersService } from '../users/users.service';
-import { INIT_PERMISSIONS, INIT_ROLES, INIT_USERS, INIT_COMPANIES, INIT_JOBS, INIT_RESUMES, INIT_SUBSCRIBERS } from './sample.data';
+import { INIT_PERMISSIONS, INIT_ROLES, INIT_USERS, INIT_COMPANIES, INIT_JOBS, INIT_RESUMES, INIT_SUBSCRIBERS, USER_PERMISSIONS } from './sample.data';
 
 @Injectable()
 export class DatabasesService implements OnModuleInit {
@@ -48,17 +48,35 @@ export class DatabasesService implements OnModuleInit {
                 description: roleAdmin.description,
                 isActive: roleAdmin.isActive,
                 permissions: permissions,
-            })
+            });
         }
         
+        const userPermissions = await this.permissionModel.find({
+            $or: USER_PERMISSIONS,
+        }).select('_id');
+
         const roleUser = INIT_ROLES.find((item) => item.name === 'USER');
         if (roleUser) {
             await this.roleModel.create({
                 name: roleUser.name,
                 description: roleUser.description,
                 isActive: roleUser.isActive,
-                permissions: [],
-            })
+                permissions: userPermissions,
+            });
+        }
+      } else {
+        // Cập nhật permissions cho role USER nếu đang trống
+        const roleUserInDb = await this.roleModel.findOne({ name: 'USER' });
+        if (roleUserInDb && (!roleUserInDb.permissions || roleUserInDb.permissions.length === 0)) {
+          const userPermissions = await this.permissionModel.find({
+            $or: USER_PERMISSIONS,
+          }).select('_id');
+
+          await this.roleModel.updateOne(
+            { name: 'USER' },
+            { permissions: userPermissions },
+          );
+          this.logger.log('>>> UPDATED PERMISSIONS FOR ROLE USER');
         }
       }
 

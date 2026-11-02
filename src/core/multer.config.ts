@@ -45,8 +45,18 @@ export class MulterConfigService implements MulterOptionsFactory {
       }),
       fileFilter: (req, file, cb) => {
         const allowedFileTypes = ['jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx'];
+        const allowedMimeTypes = [
+          'image/jpeg',
+          'image/png',
+          'image/gif',
+          'application/pdf',
+          'application/msword',
+          'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        ];
         const fileExtension = file.originalname.split('.').pop()?.toLowerCase() || '';
-        const isValidFileType = allowedFileTypes.includes(fileExtension);
+        const isValidFileType =
+          allowedFileTypes.includes(fileExtension) &&
+          allowedMimeTypes.includes(file.mimetype);
         if (!isValidFileType) {
           cb(new HttpException('Invalid file type', HttpStatus.UNPROCESSABLE_ENTITY), false);
         } else {

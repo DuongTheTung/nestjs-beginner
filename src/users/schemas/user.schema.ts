@@ -21,7 +21,7 @@ export class User {
     password: string;
 
     @Prop()
-    age: string;
+    age: number;
 
     @Prop()
     gender: string;
@@ -32,7 +32,7 @@ export class User {
     @Prop({ type: Object })
     company: {
         _id: mongoose.Schema.Types.ObjectId;
-        email: string;
+        name: string;
     };
 
 
