@@ -86,7 +86,8 @@ export class UsersService {
     }).populate({ path: 'role', select: { name: 1 } });
   }
 
-  isValidPassword(password: string, hash: string) {
+  isValidPassword(password: string, hash?: string) {
+    if (!hash) return false;
     return bcrypt.compareSync(password, hash);
   }
 
@@ -174,5 +175,28 @@ export class UsersService {
     ).populate({ path: 'role', select: { name: 1 } });
   }
 
+  async findOrCreateGoogleUser(data: { email: string; name: string; avatar?: string }) {
+    let user = await this.userModel
+      .findOne({ email: data.email })
+      .populate({ path: 'role', select: { name: 1 } });
 
+    if (!user) {
+      const userRole = await this.roleModel.findOne({ name: 'USER' });
+      if (!userRole) {
+        throw new NotFoundException('Role USER not found');
+      }
+
+      const newUser = await this.userModel.create({
+        email: data.email,
+        name: data.name,
+        avatar: data.avatar,
+        authType: 'GOOGLE',
+        role: userRole._id,
+      });
+
+      user = await newUser.populate({ path: 'role', select: { name: 1 } });
+    }
+
+    return user;
+  }
 }
