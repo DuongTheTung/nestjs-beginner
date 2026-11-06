@@ -195,6 +195,9 @@ export class UsersService {
       });
 
       user = await newUser.populate({ path: 'role', select: { name: 1 } });
+    } else if (data.avatar && !user.avatar) {
+      await this.userModel.updateOne({ _id: user._id }, { avatar: data.avatar });
+      user.avatar = data.avatar;
     }
 
     return user;

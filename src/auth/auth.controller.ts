@@ -7,9 +7,10 @@ import { GoogleAuthGuard } from './google-auth.guard';
 import { RegisterUserDto, UserLoginDto } from '../users/dto/create-user.dto';
 import type { Response, Request } from 'express';
 import type { IUser } from '../users/users.interface';
-import { ApiBody } from '@nestjs/swagger';
+import { ApiBody, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 // nhận request từ client
+@ApiTags("auth")
 @Controller("auth")
 export class AuthController {
     constructor(
@@ -18,6 +19,7 @@ export class AuthController {
 
     @Public()
     @UseGuards(LocalAuthGuard)
+    @ApiOperation({ summary: "Đăng nhập tài khoản bằng email/mật khẩu" })
     @ApiBody({ type: UserLoginDto })
     @Post('/login')
     @ResponseMessage("Đăng nhập thành công")
@@ -27,12 +29,14 @@ export class AuthController {
     }
 
     @Public()
+    @ApiOperation({ summary: "Đăng ký tài khoản người dùng mới" })
     @ResponseMessage("Register a new user")
     @Post('/register')
     handleRegister(@Body() registerUserDto: RegisterUserDto) {
         return this.authService.register(registerUserDto);
     }
 
+    @ApiOperation({ summary: "Lấy thông tin tài khoản hiện tại từ token" })
     @ResponseMessage("Get user information")
     @Get('/account')
     handleGetAccount(@User() user: IUser) {
@@ -40,6 +44,7 @@ export class AuthController {
     }
 
     @Public()
+    @ApiOperation({ summary: "Lấy Access Token mới bằng Refresh Token qua Cookie" })
     @ResponseMessage("Get user refresh token")
     @Get('/refresh')
     handleRefreshToken(@Req() request: Request,
@@ -49,6 +54,7 @@ export class AuthController {
         return this.authService.processNewToken(refreshToken, response);
     }
 
+    @ApiOperation({ summary: "Đăng xuất tài khoản" })
     @ResponseMessage("Logout user")
     @Post("/logout")
     handleLogout(
@@ -60,6 +66,7 @@ export class AuthController {
 
     @Public()
     @UseGuards(GoogleAuthGuard)
+    @ApiOperation({ summary: "Khởi tạo đăng nhập / đăng ký bằng Google (chuyển hướng sang Google)" })
     @Get('/google')
     @ResponseMessage("Redirect to Google Login")
     handleGoogleLogin() {
@@ -68,6 +75,7 @@ export class AuthController {
 
     @Public()
     @UseGuards(GoogleAuthGuard)
+    @ApiOperation({ summary: "Nhận kết quả callback từ Google OAuth 2.0" })
     @Get('/google/callback')
     @ResponseMessage("Đăng nhập bằng Google thành công")
     handleGoogleCallback(

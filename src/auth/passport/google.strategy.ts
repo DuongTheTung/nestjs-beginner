@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
 import { ConfigService } from '@nestjs/config';
@@ -25,8 +25,14 @@ export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
         done: VerifyCallback,
     ): Promise<any> {
         const { displayName, emails, photos } = profile;
+        const email = emails?.[0]?.value;
+
+        if (!email) {
+            return done(new UnauthorizedException('Không thể lấy email từ tài khoản Google'), false);
+        }
+
         const googleUser = {
-            email: emails?.[0]?.value,
+            email,
             name: displayName,
             avatar: photos?.[0]?.value,
         };

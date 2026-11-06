@@ -62,7 +62,7 @@ export class AuthService {
             maxAge: ms(this.configService.getOrThrow<string>("JWT_REFRESH_EXPIRE") as ms.StringValue),
         });
 
-        const tempRole = await this.rolesService.findOne(role._id as any) as any;
+        const tempRole = await this.rolesService.findOne((role as any)?._id ?? role.toString()) as any;
 
         return {
             access_token: this.jwtService.sign(payload),
@@ -72,6 +72,8 @@ export class AuthService {
                 name,
                 email,
                 role,
+                avatar: user.avatar,
+                authType: user.authType,
                 permissions: tempRole?.permissions ?? []
             }
         };
@@ -135,6 +137,8 @@ export class AuthService {
                         name,
                         email,
                         role,
+                        avatar: user.avatar,
+                        authType: user.authType,
                         permissions: tempRole?.permissions ?? []
                     }
                 };
