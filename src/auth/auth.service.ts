@@ -23,7 +23,7 @@ export class AuthService {
         // console.log('--- BƯỚC 2: Tìm user với username =', username);
         const user = await this.usersService.findOneByUsername(username);
         // console.log('--- BƯỚC 3: User trong database =', user);
-        if (user) {
+        if (user && user.password) {
             // Bắt buộc phải có await ở đây
             const isValid = await this.usersService.isValidPassword(pass, user.password);
             // console.log('--- BƯỚC 3.1: Mật khẩu khớp không? =', isValid);
@@ -33,6 +33,11 @@ export class AuthService {
         }
 
         return null;
+    }
+
+    // tìm hoặc tạo user khi đăng nhập google
+    async validateGoogleUser(googleUser: { email: string; name: string; avatar?: string }): Promise<any> {
+        return await this.usersService.findOrCreateGoogleUser(googleUser);
     }
 
     //encode
