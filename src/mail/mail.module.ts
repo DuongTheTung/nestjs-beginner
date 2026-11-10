@@ -8,6 +8,8 @@ import { join } from 'path';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Subscriber, SubscriberSchema } from '../subscribers/schemas/subscriber.schema';
 import { Job, JobSchema } from '../jobs/schemas/job.schema';
+import { BullModule } from '@nestjs/bull';
+import { MailProcessor } from './mail.processor';
 
 @Module({
   imports: [
@@ -38,8 +40,11 @@ import { Job, JobSchema } from '../jobs/schemas/job.schema';
       }),
       inject: [ConfigService],
     }),
+    BullModule.registerQueue({
+      name: 'mail-queue',
+    }),
   ],
   controllers: [MailController],
-  providers: [MailService]
+  providers: [MailService, MailProcessor]
 })
 export class MailModule { }

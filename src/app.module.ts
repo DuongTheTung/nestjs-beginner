@@ -19,6 +19,7 @@ import { RolesModule } from './roles/roles.module';
 import { SubscribersModule } from './subscribers/subscribers.module';
 import { MailModule } from './mail/mail.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import { BullModule } from '@nestjs/bull';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -36,6 +37,17 @@ import { ScheduleModule } from '@nestjs/schedule';
         }
       }),
 
+      inject: [ConfigService],
+    }),
+
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        redis: {
+          host: configService.get<string>('REDIS_HOST', 'localhost'),
+          port: configService.get<number>('REDIS_PORT', 6379),
+        },
+      }),
       inject: [ConfigService],
     }),
 
