@@ -14,6 +14,18 @@ export class Subscriber {
   @Prop()
   skills: string[];
 
+  @Prop({ default: '0 8 * * 1' })
+  cronExpression: string;
+
+  @Prop({ default: () => new Date() })
+  nextRunAt: Date;
+
+  @Prop()
+  lastSentAt: Date;
+
+  @Prop({ default: true })
+  isActive: boolean;
+
   @Prop({ type: Object })
   createdBy: {
     _id: mongoose.Schema.Types.ObjectId;
@@ -46,3 +58,5 @@ export class Subscriber {
 }
 
 export const SubscriberSchema = SchemaFactory.createForClass(Subscriber);
+
+SubscriberSchema.index({ nextRunAt: 1, isActive: 1 });

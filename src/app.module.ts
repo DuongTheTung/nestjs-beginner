@@ -25,10 +25,10 @@ import { BullModule } from '@nestjs/bull';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-
+    ScheduleModule.forRoot(),
 
     MongooseModule.forRootAsync({
-      imports: [ConfigModule, ScheduleModule.forRoot()],
+      imports: [ConfigModule],
       useFactory: async (configService: ConfigService) => ({
         uri: configService.get<string>('MONGODB_URI'),
         connectionFactory: (connection) => {

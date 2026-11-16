@@ -65,6 +65,17 @@ export class DatabasesService implements OnModuleInit {
             });
         }
       } else {
+        // Cập nhật permissions cho role ADMIN nếu đang trống
+        const roleAdminInDb = await this.roleModel.findOne({ name: 'ADMIN' });
+        if (roleAdminInDb && (!roleAdminInDb.permissions || roleAdminInDb.permissions.length === 0)) {
+          const permissions = await this.permissionModel.find({}).select('_id');
+          await this.roleModel.updateOne(
+            { name: 'ADMIN' },
+            { permissions: permissions },
+          );
+          this.logger.log('>>> UPDATED PERMISSIONS FOR ROLE ADMIN');
+        }
+
         // Cập nhật permissions cho role USER nếu đang trống
         const roleUserInDb = await this.roleModel.findOne({ name: 'USER' });
         if (roleUserInDb && (!roleUserInDb.permissions || roleUserInDb.permissions.length === 0)) {

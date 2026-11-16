@@ -7,6 +7,7 @@ import type { SoftDeleteModel } from 'soft-delete-plugin-mongoose';
 import type { IUser } from '../users/users.interface';
 import aqp from 'api-query-params';
 import mongoose from 'mongoose';
+import { CronExpressionParser } from 'cron-parser';
 
 @Injectable()
 export class SubscribersService {
@@ -15,6 +16,16 @@ export class SubscribersService {
     private subscriberModel: SoftDeleteModel<SubscriberDocument>,
   ) {}
 
+  calculateNextRun(cronExpression: string): Date {
+    try {
+      const interval = CronExpressionParser.parse(cronExpression);
+      return interval.next().toDate();
+    } catch {
+      const defaultInterval = CronExpressionParser.parse('0 8 * * 1');
+      return defaultInterval.next().toDate();
+    }
+  }
+
   async create(createSubscriberDto: CreateSubscriberDto, user: IUser) {
     const { email } = createSubscriberDto;
     const isExist = await this.subscriberModel.findOne({ email });
@@ -22,8 +33,13 @@ export class SubscribersService {
       throw new BadRequestException(`Subscriber with email=${email} already exists.`);
     }
 
+    const cronExpression = createSubscriberDto.cronExpression || '0 8 * * 1';
+    const nextRunAt = this.calculateNextRun(cronExpression);
+
     const newSubscriber = await this.subscriberModel.create({
       ...createSubscriberDto,
+      cronExpression,
+      nextRunAt,
       createdBy: {
         _id: user._id,
         email: user.email,
@@ -75,15 +91,21 @@ export class SubscribersService {
   }
 
   async update(updateSubscriberDto: UpdateSubscriberDto, user: IUser) {
+    const updateData: any = {
+      ...updateSubscriberDto,
+      updatedBy: {
+        _id: user._id,
+        email: user.email,
+      },
+    };
+
+    if (updateSubscriberDto.cronExpression) {
+      updateData.nextRunAt = this.calculateNextRun(updateSubscriberDto.cronExpression);
+    }
+
     const updated = await this.subscriberModel.updateOne(
       { email: user.email },
-      {
-        ...updateSubscriberDto,
-        updatedBy: {
-          _id: user._id,
-          email: user.email,
-        },
-      },
+      updateData,
       { upsert: true }
     );
     return updated;
